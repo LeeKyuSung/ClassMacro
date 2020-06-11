@@ -68,59 +68,32 @@ public class Crawling {
 		Select s = new Select(driver.findElement(By.id("sel_dept")));
 		s.selectByValue("4424");
 		driver.findElement(By.id("txt_prof")).sendKeys("배덕현");
+
+		// 조회 버튼 누르기
+		driver.findElement(By.id("btn_search")).click();
+		try {
+			Thread.sleep(500);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static Crawling getInstance() {
 		return instance;
 	}
 
-	public boolean checkAndSaveCourse() {
-		// true : 수강 가능 & 수강 성공
-		// false : 꽉참 & 수강 실패
-
-		// 조회 버튼 누르기
-		driver.findElement(By.id("btn_search")).click();
-		try {
-			Thread.sleep(1000);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void clickSaveCourse() {
 
 		WebElement table = driver.findElement(By.id("listTable"));
-		List<WebElement> tmp = table.findElements(By.cssSelector("*"));
-		String max = tmp.get(34).getText();
-		String now = tmp.get(35).getText();
-		System.out.println("[" + max + "]/[" + now + "]");
-
-		if (Integer.parseInt(max.trim()) > Integer.parseInt(now.trim())) {
-			// 수강 가능
-			WebElement saveButton = table.findElement(By.name("saveCourse"));
-			// 5번 수강신청 클릭
-			for (int i = 0; i < 5; i++) {
-				saveButton.sendKeys(Keys.ENTER);
-
-				// 수강신청 성공여부 체크
-				String courseListStr = driver.findElement(By.id("courseList")).getText();
-				if (courseListStr.contains("법학개론"))
-					return true;
-
-				try {
-					Thread.sleep(100);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			return false;
-		} else {
-			// 꽉참
-			return false;
-		}
+		// 수강 신청 버튼 클릭
+		WebElement saveButton = table.findElement(By.name("saveCourse"));
+		saveButton.sendKeys(Keys.ENTER);
 	}
 
 	public void reset() {
 		instance = new Crawling();
 	}
-	
+
 	public void close() {
 		driver.close();
 	}

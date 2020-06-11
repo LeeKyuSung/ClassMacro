@@ -12,38 +12,15 @@ public class Task {
 		String date = dayTime.format(new Date());
 		System.out.println("Task Start : " + date);
 
-		try {
-			while (true) {
-				boolean flag;
-				try {
-					flag = Crawling.getInstance().checkAndSaveCourse();
-				} catch (Exception e){
-					System.out.println("Something wrong : " + e.getMessage());
-					e.printStackTrace();
-					Crawling.getInstance().close();
-					Crawling.getInstance().reset();
-					flag = Crawling.getInstance().checkAndSaveCourse();
-				}
-				if (flag) { // 수강 성공
-					// 수강 신청
-					System.out.println("SUCCESS!!!!!!!!!!!!!!!!!!!!!!!!");
-					System.out.println(dayTime.format(new Date()));
-					Crawling.getInstance().close();
-					return;
-				} else { // 인원 꽉참 or 수강 실패
-					// 1초 쉬고 다음 루프
-					try {
-						Thread.sleep(1000);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
+		while (true) {
+			try {
+				Crawling.getInstance().clickSaveCourse();
+				Thread.sleep(500);
+			} catch (Exception e) {
+				System.out.println("Something Wrong : " + e.getMessage());
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			System.out.println("Task error : " + e.getMessage());
-			System.out.println(dayTime.format(new Date()));
-			e.printStackTrace();
+			
 		}
-
 	}
 }
