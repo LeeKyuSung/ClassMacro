@@ -14,7 +14,16 @@ public class Task {
 
 		try {
 			while (true) {
-				boolean flag = Crawling.getInstance().checkAndSaveCourse();
+				boolean flag;
+				try {
+					flag = Crawling.getInstance().checkAndSaveCourse();
+				} catch (Exception e){
+					System.out.println("Something wrong : " + e.getMessage());
+					e.printStackTrace();
+					Crawling.getInstance().close();
+					Crawling.getInstance().reset();
+					flag = Crawling.getInstance().checkAndSaveCourse();
+				}
 				if (flag) { // 수강 성공
 					// 수강 신청
 					System.out.println("SUCCESS!!!!!!!!!!!!!!!!!!!!!!!!");

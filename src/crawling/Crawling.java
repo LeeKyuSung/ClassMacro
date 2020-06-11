@@ -117,6 +117,10 @@ public class Crawling {
 		}
 	}
 
+	public void reset() {
+		instance = new Crawling();
+	}
+	
 	public void close() {
 		driver.close();
 	}
