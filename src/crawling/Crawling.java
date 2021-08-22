@@ -1,6 +1,6 @@
 package crawling;
 
-import java.util.List;
+import java.util.Scanner;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -28,53 +28,14 @@ public class Crawling {
 		// driver = new FirefoxDriver();
 
 		driver.get(startUrl);
-		try {
-			Thread.sleep(500);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// login
-		if (!"Facebook".equals(driver.getTitle())) {
-			WebElement id = driver.findElement(By.id("userId"));
-			WebElement pwd = driver.findElement(By.id("password"));
-			id.sendKeys(Config.ID);
-			pwd.sendKeys(Config.PWD);
-			pwd.sendKeys(Keys.RETURN);
-		}
-		try {
-			Thread.sleep(500);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// open 학사시스템
-		driver.get("https://cais.kaist.ac.kr");
-		try {
-			Thread.sleep(500);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// open 수강신청
-		driver.get("https://cais.kaist.ac.kr/courseRegistration");
-		try {
-			Thread.sleep(500);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// 인문사회과학부 선택, 배덕현 교수 입력
-		Select s = new Select(driver.findElement(By.id("sel_dept")));
-		s.selectByValue("4424");
-		driver.findElement(By.id("txt_prof")).sendKeys("배덕현");
-
-		// 조회 버튼 누르기
-		driver.findElement(By.id("btn_search")).click();
-		try {
-			Thread.sleep(500);
-		} catch (Exception e) {
-			e.printStackTrace();
+		// 로그인 하고 과목 검색할때까지 대기
+		Scanner kb = new Scanner(System.in);
+		while (true) {
+			System.out.print("로그인, 과목 검색 후 계속하세요. 완료하심? (완료 : Y) : ");
+			String in = kb.nextLine();
+			if ("Y".equals(in.trim())) {
+				break;
+			}
 		}
 	}
 
